@@ -1,3 +1,7 @@
+# Exported excel
+ScrapedData_GoogleMaps.xlsx
+command.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
