@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from modules.helpers import *
 from modules.settings import SETTINGS
+from modules.colors import fore
 
 import time
 import xlsxwriter
@@ -52,7 +53,7 @@ def scrape(args):
 
         # Build the query string
         query = "{0} {1}".format(SETTINGS["BASE_QUERY"], place)
-        print("Moving on to {0}".format(place))
+        print(f"{fore.GREEN}Moving on to {place}{fore.RESET}")
 
         # Fill in the input and press enter to search
         q_input = driver.find_element_by_name("q")
@@ -81,7 +82,7 @@ def scrape(args):
                 scraped = address in addresses_scraped
 
                 if scraped and args.skip_duplicate_addresses:
-                    print("Skipping {0} as duplicate by address".format(name))
+                    print(f"{fore.WARNING}Skipping {name} as duplicate by address{fore.RESET}")
                 else:
                     # Initiate the list and add to it only now
                     data["name"] = name
@@ -93,10 +94,10 @@ def scrape(args):
 
                     if scraped:
                         addresses_scraped[address] += 1
-                        print("Currently scraping on: {0}, for the {1}. time".format(name, addresses_scraped[address]))
+                        print(f"{fore.WARNING}Currently scraping on{fore.RESET}: {name}, for the {addresses_scraped[address]}. time")
                     else:
                         addresses_scraped[address] = 1
-                        print("Currently scraping on: {0}".format(name))
+                        print(f"{fore.GREEN}Currently scraping on{fore.RESET}: {name}")
                          
                     # Only if user wants to get the URL to, get it
                     if args.scrape_website:
@@ -112,7 +113,7 @@ def scrape(args):
             try:
                 next_page_link.click()
             except WebDriverException:
-                print("No more pages for this search. Advancing to next one.")
+                print(f"{fore.WARNING}No more pages for this search. Advancing to next one.{fore.RESET}")
                 break
 
             # Wait for the next page to load
@@ -123,4 +124,4 @@ def scrape(args):
     driver.close()
 
     end_time = time.time()
-    print("Done. Time it took was {0}s".format((end_time-start_time)))
+    print(f"{fore.GREEN}Done. Time it took was {end_time-start_time}s{fore.RESET}")

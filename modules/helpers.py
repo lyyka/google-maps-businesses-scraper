@@ -23,7 +23,7 @@ def get_website_url(url):
     # Will try to get URLs that are given through google, that;s why we allow redirects
     try:
         if url is not None:
-            response = requests.head(url, allow_redirects=True)
+            response = requests.head(url, allow_redirects=True, timeout=10)
             return response.url
         else:
             return ""
