@@ -1,9 +1,10 @@
 import requests
 
 def generate_headers(args, example_dict):
-    headers = example_dict.keys()
     if not args.scrape_website:
-        headers.remove("website")
+        del example_dict["website"]
+
+    headers = example_dict.keys()
     
     return [header.capitalize() for header in headers]
 
