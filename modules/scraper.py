@@ -121,11 +121,20 @@ def scrape(args):
                     row += 1
 
             # Go to next page                                
+<<<<<<< HEAD
             next_page_link = driver.find_element_by_class_name("n7lv7yjyC35__section-pagination-button-next"")
+=======
+            next_page_link = driver.find_element_by_id("n7lv7yjyC35__section-pagination-button-next")
+
+>>>>>>> cc0e1c566ae5a991ccbcfafbd21d65b5a47207fb
             try:
                 next_page_link.click()
             except WebDriverException:
                 print(f"{fore.WARNING}No more pages for this search. Advancing to next one.{fore.RESET}")
+<<<<<<< HEAD
+=======
+                # break
+>>>>>>> cc0e1c566ae5a991ccbcfafbd21d65b5a47207fb
 
             # Wait for the next page to load
             time.sleep(5)
