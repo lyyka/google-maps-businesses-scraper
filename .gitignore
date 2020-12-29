@@ -1,3 +1,6 @@
+# Testing script
+test_request.py
+
 # Exported excel
 ScrapedData_GoogleMaps.xlsx
 command.txt

@@ -6,13 +6,20 @@ from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.support import expected_conditions as EC
 
 from modules.helpers import *
-from modules.settings import SETTINGS
-from modules.colors import fore
+from modules.const.settings import SETTINGS
+from modules.const.colors import fore
 
 import time
+import json
 import xlsxwriter
 
 def scrape(args):
+    '''
+    Scrapes the results and puts them in the excel spreadsheet.
+
+    Parameters:
+            args (object): CLI arguments
+    '''
     if args.pages is not None:
         SETTINGS["PAGE_DEPTH"] = args.pages
     SETTINGS["BASE_QUERY"] = args.query
@@ -34,7 +41,8 @@ def scrape(args):
         "name": "",
         "phone": "",
         "address": "",
-        "website": ""
+        "website": "",
+        "email": ""
     }
     headers = generate_headers(args, data)
     print_table_headers(worksheet, headers)
@@ -76,7 +84,6 @@ def scrape(args):
             for box in boxes:
                 # Just get the values, add only after we determine this is not a duplicate (or duplicates should not be skiped)
                 name = box.find_element_by_class_name("section-result-title").find_element_by_xpath(".//span[1]").text
-
                 address = box.find_element_by_class_name("section-result-location").text
 
                 scraped = address in addresses_scraped
@@ -84,13 +91,7 @@ def scrape(args):
                 if scraped and args.skip_duplicate_addresses:
                     print(f"{fore.WARNING}Skipping {name} as duplicate by address{fore.RESET}")
                 else:
-                    # Initiate the list and add to it only now
-                    data["name"] = name
-                    data["address"] = address
-
                     phone = box.find_element_by_class_name("section-result-phone-number").find_element_by_xpath(".//span[1]").text
-
-                    data["phone"] = phone
 
                     if scraped:
                         addresses_scraped[address] += 1
@@ -102,19 +103,29 @@ def scrape(args):
                     # Only if user wants to get the URL to, get it
                     if args.scrape_website:
                         url = box.find_element_by_class_name("section-result-action-icon-container").find_element_by_xpath("./..").get_attribute("href")
-                        website = get_website_url(url)
-                        data["website"] = website
+                        website, email = get_website_data(url)
+                        if website is not None:
+                            data["website"] = website
+                        if email is not None:
+                            data["email"] = ','.join(email)
+
+                    data["name"] = name
+                    data["address"] = address
+                    data["phone"] = phone
                     
+                    # If additional output is requested
+                    if args.verbose:
+                        print(json.dumps(data, indent=1))
+
                     write_data_row(worksheet, data, row)
                     row += 1
 
             # Go to next page                                
-            next_page_link = driver.find_element_by_class_name("n7lv7yjyC35__button-next-icon")
+            next_page_link = driver.find_element_by_class_name("n7lv7yjyC35__section-pagination-button-next"")
             try:
                 next_page_link.click()
             except WebDriverException:
                 print(f"{fore.WARNING}No more pages for this search. Advancing to next one.{fore.RESET}")
-                break
 
             # Wait for the next page to load
             time.sleep(5)
@@ -124,4 +135,5 @@ def scrape(args):
     driver.close()
 
     end_time = time.time()
-    print(f"{fore.GREEN}Done. Time it took was {end_time-start_time}s{fore.RESET}")
+    elapsed = round(end_time-start_time, 2)
+    print(f"{fore.GREEN}Done. Time it took was {elapsed}s{fore.RESET}")
