@@ -3,7 +3,6 @@ import re
 from bs4 import BeautifulSoup
 
 def generate_headers(args, example_dict):
-<<<<<<< HEAD
     '''
     Generates headeers from the data dictionary by capitalizing it's keys.
 
@@ -15,8 +14,6 @@ def generate_headers(args, example_dict):
             list (list): List of capitalized strings representing headers
     '''
     headers = example_dict.keys()
-=======
->>>>>>> cc0e1c566ae5a991ccbcfafbd21d65b5a47207fb
     if not args.scrape_website:
         del example_dict["website"]
 
