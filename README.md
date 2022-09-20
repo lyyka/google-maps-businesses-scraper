@@ -1,7 +1,9 @@
+## ATTENTION: This project is no longer maintained as I do not have time for it. If someone is willing to make it up to date with current google maps page, you are all free to submit a PR.
+
 # Google Maps Businesses Scraper
 Built with Python running Selenium, this app allows you to scrape places info from the google maps search results
 
-# CLI Arguments
+## CLI Arguments
 * `--query`
   * First part of the query you want to execute, excluding any locations, zip codes, etc. For example "Commerical property managers near"
 * `--places`
@@ -13,7 +15,7 @@ Built with Python running Selenium, this app allows you to scrape places info fr
 * `--scrape-website`
   * Flag that if included in the command, will tell the app to scrape website URLs too. This is optional and defaults fo false because the process is greatly slower with this flag on
 
-# Examples
+## Examples
 The example command you can run with this app is:
 ```
 python script.py --query="Commercial property managers near" --places="Washington,Miami,Chicago"
@@ -26,7 +28,7 @@ This will generate three search queries:
 
 The above command will scrape all **Commercial property managers** that are **near Washington, Miami and Chicago**.
 
-## Scraping the website too
+### Scraping the website too
 The app allows you to scrape the website urls for each company. This is disabled by default as it slows down the process.
 You can enable this by including a flag `--scrape-website` in the command like so:
 ```
@@ -35,5 +37,5 @@ python script.py --query="Commercial property managers near" --places="Washingto
 
 This will add "Website" column to the excel output file.
 
-# Requirements
+## Requirements
 As this app is made with Python and Selenium, it is required to install [Python](https://www.python.org/downloads/) and also it requires the Chrome driver, which you can download from [here](https://sites.google.com/a/chromium.org/chromedriver/downloads). Make sure to select your browser version and put the downloaded executable in the PATH variable in your system.
