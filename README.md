@@ -1,4 +1,4 @@
-## ATTENTION: This project is no longer maintained as I do not have time for it. If someone is willing to make it up to date with current google maps page, you are all free to submit a PR.
+## 🚨 ATTENTION: This project is no longer maintained as I do not have time for it. If someone is willing to make it up to date with current google maps page, you are all free to submit a PR.
 
 # Google Maps Businesses Scraper
 Built with Python running Selenium, this app allows you to scrape places info from the google maps search results
